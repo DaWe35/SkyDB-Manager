@@ -89,13 +89,13 @@
 	function fetchNote() {
 		nextRow = 0
 		// fetch file
-		skyid.getFile('m', function(response, revision) {
-			console.log("response from getFile", revision, response);
+		skyid.getJSON('m', function(response, revision) {
+			console.log("response from getJSON", revision, response);
 			var content = document.getElementById('content')
 			if (response == '') { // file not found
 				var entries = []
 			} else { // success
-				resp = JSON.parse(response)
+				resp = response
 				var entries = resp.entries
 			}
 
@@ -212,10 +212,10 @@
 				break
 			}
 		}
-		var json = JSON.stringify({ 'entries': entries })
+		var json = { 'entries': entries }
 
 		// upload to registry with SkyID key
-		skyid.setFile('m', json, function(response) {
+		skyid.setJSON('m', json, function(response) {
 			document.getElementById('save_note').innerHTML = 'Index saved'
 			if (response != true) {
 				alert('Sorry, upload failed :(')
