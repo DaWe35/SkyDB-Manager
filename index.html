@@ -168,20 +168,11 @@
 	}
 
 
-	async function getSkylink(url) {
+	async function getSkylinkFromHeader(url) {
 		let req = new XMLHttpRequest()
 		req.open('GET', url, false)
 		req.send(null)
-		let allResponseHeaders = req.getAllResponseHeaders()
-
-		let arr = allResponseHeaders.split('\r\n');
-		let headers = arr.reduce(function (acc, current, i){
-			let parts = current.split(': ');
-			acc[parts[0]] = parts[1];
-			return acc;
-		}, {});
-
-		return headers['skynet-skylink']
+		return req.getResponseHeader("Skynet-Skylink")
 	}
 
 
@@ -199,7 +190,7 @@
 					return
 				}
 				if (skylink.length != 46) {
-					skylink = await getSkylink(skylink)
+					skylink = await getSkylinkFromHeader(skylink)
 
 					if (skylink.length != 46) {
 						alert('Skylink is invalid, please enter a 46 character length skylink without "sia://""')
